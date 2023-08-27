@@ -1,0 +1,27 @@
+steps:
+  # Terraform コードのフォーマットを確認する
+  # コードが正しくフォーマットされていない場合、差分を表示する
+  - id: "terraform-fmt-check"
+    name: "hashicorp/terraform:$_TERRAFORM_CLIENT_VERSION"
+    args: ["fmt", "-check", "-diff"]
+
+  # Terraform の初期化を実行
+  # プロジェクト内の .tf ファイルを読み込み、必要なプロバイダの設定を行う
+  - id: "terraform-init"
+    name: "hashicorp/terraform:$_TERRAFORM_CLIENT_VERSION"
+    args: ["init"]
+
+  # Terraform での変更内容をプレビューする
+  # このステップでは、実際のリソースへの変更は行われない
+  - id: "terraform-plan"
+    name: "hashicorp/terraform:$_TERRAFORM_CLIENT_VERSION"
+     args: ["plan", "-lock-timeout=120s", "-var=billing_account=${_BILLING_ACCOUNT}"]
+
+  # Terraform での変更内容を実際に適用する
+  # このステップで、リソースへの変更を行う
+  - id: "terraform-apply"
+    name: "hashicorp/terraform:$_TERRAFORM_CLIENT_VERSION"
+    args: ["apply", "-auto-approve", "-lock-timeout=120s", "-var=billing_account=${_BILLING_ACCOUNT}"]
+
+# タスクの実行がこの時間を超えると、タイムアウトとして処理が終了される
+timeout: "3600s"
