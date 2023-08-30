@@ -1,18 +1,7 @@
-# 指定した Google Cloud プロジェクトを Firebase プロジェクトとして初期化するためのリソースを作成する
-resource "google_project" "default" {
-  project_id      = local.project_id
-  name            = local.project_name
-  billing_account = var.billing_account
-
-  labels = {
-    "firebase" = "enabled"
-  }
-}
-
 # 各種 API を有効化する
 resource "google_project_service" "default" {
   provider = google-beta
-  project  = google_project.default.project_id
+  project  = local.project_id
   for_each = toset([
     "firestore.googleapis.com",
     "cloudbilling.googleapis.com",
@@ -26,6 +15,22 @@ resource "google_project_service" "default" {
   ])
   service            = each.key
   disable_on_destroy = false
+}
+
+# 指定した Google Cloud プロジェクトを Firebase プロジェクトとして初期化するためのリソースを作成する
+resource "google_project" "default" {
+  project_id      = local.project_id
+  name            = local.project_name
+  billing_account = var.billing_account
+
+  labels = {
+    "firebase" = "enabled"
+  }
+
+  # 各種 API が有効化されるのを待ってから 本リソースが実行される
+  depends_on = [
+    google_project_service.default,
+  ]
 }
 
 # Firebase のプロジェクトを立ち上げる
