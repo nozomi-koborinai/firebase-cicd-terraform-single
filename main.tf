@@ -20,7 +20,7 @@ resource "google_project_service" "default" {
 # Firebase のプロジェクトを立ち上げる
 resource "google_firebase_project" "default" {
   provider = google-beta
-  project  = google_project.default.project_id
+  project  = local.project_id
 
   # 各種 API が有効化されるのを待ってから 本リソースが実行される
   depends_on = [
