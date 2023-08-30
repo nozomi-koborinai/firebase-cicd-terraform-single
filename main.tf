@@ -19,9 +19,8 @@ resource "google_project_service" "default" {
 
 # 指定した Google Cloud プロジェクトを Firebase プロジェクトとして初期化するためのリソースを作成する
 resource "google_project" "default" {
-  project_id      = local.project_id
-  name            = local.project_name
-  billing_account = var.billing_account
+  project_id = local.project_id
+  name       = local.project_name
 
   labels = {
     "firebase" = "enabled"
