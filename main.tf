@@ -1,7 +1,7 @@
 # 各種 API を有効化する
 resource "google_project_service" "default" {
   provider = google-beta
-  project  = google_project.default.project_id
+  project  = local.project_id
   for_each = toset([
     "firestore.googleapis.com",
     "cloudbilling.googleapis.com",
