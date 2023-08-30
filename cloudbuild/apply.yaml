@@ -15,7 +15,7 @@ steps:
   # このステップでは、実際のリソースへの変更は行われない
   - id: "terraform-plan"
     name: "hashicorp/terraform:$_TERRAFORM_CLIENT_VERSION"
-     args: ["plan", "-lock-timeout=120s", "-var=billing_account=${_BILLING_ACCOUNT}"]
+    args: ["plan", "-lock-timeout=120s", "-var=billing_account=${_BILLING_ACCOUNT}"]
 
   # Terraform での変更内容を実際に適用する
   # このステップで、リソースへの変更を行う
