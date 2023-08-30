@@ -21,7 +21,6 @@ resource "google_project_service" "default" {
 resource "google_project" "default" {
   project_id      = local.project_id
   name            = local.project_name
-  billing_account = var.billing_account
 
   labels = {
     "firebase" = "enabled"
