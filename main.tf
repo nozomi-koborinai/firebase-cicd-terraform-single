@@ -17,21 +17,6 @@ resource "google_project_service" "default" {
   disable_on_destroy = false
 }
 
-# 指定した Google Cloud プロジェクトを Firebase プロジェクトとして初期化するためのリソースを作成する
-resource "google_project" "default" {
-  project_id = local.project_id
-  name       = local.project_name
-
-  labels = {
-    "firebase" = "enabled"
-  }
-
-  # 各種 API が有効化されるのを待ってから 本リソースが実行される
-  depends_on = [
-    google_project_service.default,
-  ]
-}
-
 # Firebase のプロジェクトを立ち上げる
 resource "google_firebase_project" "default" {
   provider = google-beta
